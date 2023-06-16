@@ -122,6 +122,7 @@ with implementation:
                 Alamine_Aminotransferase, Aspartate_Aminotransferase, Total_Protiens,
                 Albumin, Albumin_and_Globulin_Ratio
             ]])
+        le = joblib.load("le.save")
 
         if skor_akurasi > akurasiii:
             model = joblib.load("svm_model.joblib")
