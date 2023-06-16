@@ -44,6 +44,56 @@ with data:
 
 with implementation:
     st.write("# Implementation")
+  
+    df = df.fillna(df.mean(numeric_only=True))
+
+    # Buat dictionary untuk melakukan mapping variabel Liver_disease
+    liver = {'Liver_disease': {1: 1, 2: 0}}
+
+    df = df.replace(liver)
+
+   # Buat dictionary untuk melakukan mapping variabel kategorikal menjadi variabel numerikal
+    gender = {'Gender': {"Male": 1, "Female": 0}}
+
+    df = df.replace(gender)
+    
+    X = df.drop(columns="Liver_disease")
+    y = df.Liver_disease
+   
+   
+
+    labels = pd.get_dummies(df.Liver_disease).columns.values.tolist()
+ 
+    scaler = MinMaxScaler()
+    scaler.fit(X)
+    X = scaler.transform(X)
+ 
+    
+    X_train,X_test,y_train,y_test = train_test_split(X,y,test_size=0.1,random_state=42)
+    sc = StandardScaler()
+    X_train = sc.fit_transform(X_train)
+    X_test = sc.transform(X_test)
+    
+    # SVM
+    kernel = 'linear'
+    svm_model = SVC(kernel='linear')
+    svm_model.fit(X_train, y_train)
+    y_pred=svm_model.predict(X_test)
+
+    skor_akurasi = round(100 * accuracy_score(y_test,y_pred))
+
+    # RF
+
+    rf_model = RandomForestClassifier()
+
+    # Melatih model dengan data latih
+    rf_model.fit(X_train, y_train)
+    # prediction
+    rf_model.score(X_test, y_test)
+    y_pred = rf_model.predict(X_test)
+    #Accuracy
+    akurasiii = round(100 * accuracy_score(y_test,y_pred))
+
     Age = st.number_input('Masukkan Umur Pasien')
 
     # GENDER
